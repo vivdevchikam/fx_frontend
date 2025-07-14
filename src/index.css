@@ -1,0 +1,73 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Article content styling */
+.article-content {
+  @apply text-gray-800 leading-relaxed;
+}
+
+.article-content h2 {
+  @apply text-2xl font-bold text-gray-900 mt-8 mb-4;
+}
+
+.article-content h3 {
+  @apply text-xl font-semibold text-gray-900 mt-6 mb-3;
+}
+
+.article-content p {
+  @apply mb-4 leading-relaxed;
+}
+
+.article-content .lead {
+  @apply text-xl text-gray-700 font-medium mb-6 leading-relaxed;
+}
+
+.article-content ul {
+  @apply mb-4 space-y-2;
+}
+
+.article-content li {
+  @apply ml-6 relative;
+}
+
+.article-content li::before {
+  content: "•";
+  @apply absolute -left-4 text-emerald-600 font-bold;
+}
+
+.article-content ol {
+  @apply mb-4 space-y-2;
+}
+
+.article-content ol li {
+  @apply ml-6 relative;
+}
+
+.article-content ol li::before {
+  content: counter(list-item) ".";
+  @apply absolute -left-6 text-emerald-600 font-semibold;
+}
+
+.article-content blockquote {
+  @apply border-l-4 border-emerald-500 pl-6 py-4 my-6 bg-emerald-50 italic text-gray-700;
+}
+
+.article-content strong {
+  @apply font-semibold text-gray-900;
+}
+
+/* Line clamp utilities */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.line-clamp-3 {
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
