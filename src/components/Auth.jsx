@@ -1,90 +1,97 @@
-import React, { useState } from 'react';
-import { Mail, Lock, User, Eye, EyeOff, CheckCircle, AlertCircle, ArrowRight, Scan, Shield, Zap } from 'lucide-react';
+import React, { useState } from "react";
+import {
+  Mail,
+  Lock,
+  User,
+  Eye,
+  EyeOff,
+  CheckCircle,
+  AlertCircle,
+  ArrowRight,
+  Scan,
+  Shield,
+  Zap,
+} from "lucide-react";
 
-interface AuthProps {
-  isOpen: boolean;
-  onClose: () => void;
-  onAuthSuccess: () => void;
-}
-
-const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onAuthSuccess }) => {
-  const [authMode, setAuthMode] = useState<'signin' | 'signup'>('signin');
+const Auth = ({ isOpen, onClose, onAuthSuccess }) => {
+  const [authMode, setAuthMode] = useState("signin");
   const [formData, setFormData] = useState({
-    email: '',
-    username: '',
-    password: '',
-    confirmPassword: ''
+    email: "",
+    username: "",
+    password: "",
+    confirmPassword: "",
   });
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [errors, setErrors] = useState<Record<string, string>>({});
+  const [errors, setErrors] = useState({});
 
-  const validateEmail = (email: string) => {
+  const validateEmail = (email) => {
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     return emailRegex.test(email);
   };
 
-  const validatePassword = (password: string) => {
+  const validatePassword = (password) => {
     const minLength = password.length >= 8;
     const hasUpper = /[A-Z]/.test(password);
     const hasLower = /[a-z]/.test(password);
     const hasNumber = /\d/.test(password);
     const hasSpecial = /[!@#$%^&*(),.?":{}|<>]/.test(password);
-    
+
     return {
       isValid: minLength && hasUpper && hasLower && hasNumber && hasSpecial,
-      checks: { minLength, hasUpper, hasLower, hasNumber, hasSpecial }
+      checks: { minLength, hasUpper, hasLower, hasNumber, hasSpecial },
     };
   };
 
-  const validateUsername = (username: string) => {
+  const validateUsername = (username) => {
     return username.length >= 3 && /^[a-zA-Z0-9_]+$/.test(username);
   };
 
-  const handleInputChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleInputChange = (e) => {
     const { name, value } = e.target;
-    setFormData(prev => ({ ...prev, [name]: value }));
-    
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
     // Clear errors as user types
     if (errors[name]) {
-      setErrors(prev => ({ ...prev, [name]: '' }));
+      setErrors((prev) => ({ ...prev, [name]: "" }));
     }
   };
 
   const validateForm = () => {
-    const newErrors: Record<string, string> = {};
+    const newErrors = {};
 
     if (!validateEmail(formData.email)) {
-      newErrors.email = 'Please enter a valid email address';
+      newErrors.email = "Please enter a valid email address";
     }
 
-    if (authMode === 'signup') {
+    if (authMode === "signup") {
       if (!validateUsername(formData.username)) {
-        newErrors.username = 'Username must be at least 3 characters and contain only letters, numbers, and underscores';
+        newErrors.username =
+          "Username must be at least 3 characters and contain only letters, numbers, and underscores";
       }
 
       if (formData.password !== formData.confirmPassword) {
-        newErrors.confirmPassword = 'Passwords do not match';
+        newErrors.confirmPassword = "Passwords do not match";
       }
     }
 
     const passwordValidation = validatePassword(formData.password);
     if (!passwordValidation.isValid) {
-      newErrors.password = 'Password must meet all requirements';
+      newErrors.password = "Password must meet all requirements";
     }
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
   };
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    
+
     if (!validateForm()) return;
 
     setIsLoading(true);
-    
+
     // Simulate API call
     setTimeout(() => {
       setIsLoading(false);
@@ -118,13 +125,13 @@ const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onAuthSuccess }) => {
           >
             ✕
           </button>
-          
+
           <div className="flex items-center justify-center mb-4">
             <div className="bg-white/20 backdrop-blur-sm p-3 rounded-2xl">
               <Scan className="w-8 h-8 text-white" />
             </div>
           </div>
-          
+
           <h1 className="text-2xl font-bold mb-2">Welcome to FX Health</h1>
           <p className="text-white/90">Scan Smart. Stay Secure.</p>
         </div>
@@ -134,21 +141,21 @@ const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onAuthSuccess }) => {
           {/* Auth Mode Toggle */}
           <div className="flex bg-gray-100 rounded-2xl p-1 mb-8">
             <button
-              onClick={() => setAuthMode('signin')}
+              onClick={() => setAuthMode("signin")}
               className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${
-                authMode === 'signin'
-                  ? 'bg-white text-emerald-600 shadow-md'
-                  : 'text-gray-600 hover:text-gray-800'
+                authMode === "signin"
+                  ? "bg-white text-emerald-600 shadow-md"
+                  : "text-gray-600 hover:text-gray-800"
               }`}
             >
               Sign In
             </button>
             <button
-              onClick={() => setAuthMode('signup')}
+              onClick={() => setAuthMode("signup")}
               className={`flex-1 py-3 px-4 rounded-xl font-medium transition-all duration-300 ${
-                authMode === 'signup'
-                  ? 'bg-white text-emerald-600 shadow-md'
-                  : 'text-gray-600 hover:text-gray-800'
+                authMode === "signup"
+                  ? "bg-white text-emerald-600 shadow-md"
+                  : "text-gray-600 hover:text-gray-800"
               }`}
             >
               Create Account
@@ -159,7 +166,10 @@ const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onAuthSuccess }) => {
           <form onSubmit={handleSubmit} className="space-y-6">
             {/* Email */}
             <div>
-              <label htmlFor="email" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="email"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Email Address
               </label>
               <div className="relative">
@@ -172,8 +182,8 @@ const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onAuthSuccess }) => {
                   onChange={handleInputChange}
                   className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all duration-300 ${
                     errors.email
-                      ? 'border-red-300 focus:ring-red-500'
-                      : 'border-gray-300 focus:ring-emerald-500 focus:border-transparent'
+                      ? "border-red-300 focus:ring-red-500"
+                      : "border-gray-300 focus:ring-emerald-500 focus:border-transparent"
                   }`}
                   placeholder="Enter your email"
                   required
@@ -188,9 +198,12 @@ const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onAuthSuccess }) => {
             </div>
 
             {/* Username (Sign Up Only) */}
-            {authMode === 'signup' && (
+            {authMode === "signup" && (
               <div>
-                <label htmlFor="username" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="username"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Username
                 </label>
                 <div className="relative">
@@ -203,8 +216,8 @@ const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onAuthSuccess }) => {
                     onChange={handleInputChange}
                     className={`w-full pl-12 pr-4 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all duration-300 ${
                       errors.username
-                        ? 'border-red-300 focus:ring-red-500'
-                        : 'border-gray-300 focus:ring-emerald-500 focus:border-transparent'
+                        ? "border-red-300 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-emerald-500 focus:border-transparent"
                     }`}
                     placeholder="Choose a username"
                     required
@@ -221,21 +234,24 @@ const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onAuthSuccess }) => {
 
             {/* Password */}
             <div>
-              <label htmlFor="password" className="block text-sm font-medium text-gray-700 mb-2">
+              <label
+                htmlFor="password"
+                className="block text-sm font-medium text-gray-700 mb-2"
+              >
                 Password
               </label>
               <div className="relative">
                 <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                 <input
-                  type={showPassword ? 'text' : 'password'}
+                  type={showPassword ? "text" : "password"}
                   id="password"
                   name="password"
                   value={formData.password}
                   onChange={handleInputChange}
                   className={`w-full pl-12 pr-12 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all duration-300 ${
                     errors.password
-                      ? 'border-red-300 focus:ring-red-500'
-                      : 'border-gray-300 focus:ring-emerald-500 focus:border-transparent'
+                      ? "border-red-300 focus:ring-red-500"
+                      : "border-gray-300 focus:ring-emerald-500 focus:border-transparent"
                   }`}
                   placeholder="Enter your password"
                   required
@@ -245,29 +261,41 @@ const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onAuthSuccess }) => {
                   onClick={() => setShowPassword(!showPassword)}
                   className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                 >
-                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                  {showPassword ? (
+                    <EyeOff className="w-5 h-5" />
+                  ) : (
+                    <Eye className="w-5 h-5" />
+                  )}
                 </button>
               </div>
-              
+
               {/* Password Requirements (Sign Up Only) */}
-              {authMode === 'signup' && formData.password && (
+              {authMode === "signup" && formData.password && (
                 <div className="mt-3 p-4 bg-gray-50 rounded-xl">
-                  <p className="text-sm font-medium text-gray-700 mb-2">Password Requirements:</p>
+                  <p className="text-sm font-medium text-gray-700 mb-2">
+                    Password Requirements:
+                  </p>
                   <div className="space-y-1">
                     {Object.entries({
-                      'At least 8 characters': passwordValidation.checks.minLength,
-                      'Uppercase letter': passwordValidation.checks.hasUpper,
-                      'Lowercase letter': passwordValidation.checks.hasLower,
-                      'Number': passwordValidation.checks.hasNumber,
-                      'Special character': passwordValidation.checks.hasSpecial
+                      "At least 8 characters":
+                        passwordValidation.checks.minLength,
+                      "Uppercase letter": passwordValidation.checks.hasUpper,
+                      "Lowercase letter": passwordValidation.checks.hasLower,
+                      Number: passwordValidation.checks.hasNumber,
+                      "Special character": passwordValidation.checks.hasSpecial,
                     }).map(([requirement, met]) => (
-                      <div key={requirement} className="flex items-center text-sm">
+                      <div
+                        key={requirement}
+                        className="flex items-center text-sm"
+                      >
                         {met ? (
                           <CheckCircle className="w-4 h-4 text-emerald-500 mr-2" />
                         ) : (
                           <div className="w-4 h-4 border-2 border-gray-300 rounded-full mr-2"></div>
                         )}
-                        <span className={met ? 'text-emerald-600' : 'text-gray-500'}>
+                        <span
+                          className={met ? "text-emerald-600" : "text-gray-500"}
+                        >
                           {requirement}
                         </span>
                       </div>
@@ -275,7 +303,7 @@ const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onAuthSuccess }) => {
                   </div>
                 </div>
               )}
-              
+
               {errors.password && (
                 <p className="mt-2 text-sm text-red-600 flex items-center">
                   <AlertCircle className="w-4 h-4 mr-1" />
@@ -285,23 +313,26 @@ const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onAuthSuccess }) => {
             </div>
 
             {/* Confirm Password (Sign Up Only) */}
-            {authMode === 'signup' && (
+            {authMode === "signup" && (
               <div>
-                <label htmlFor="confirmPassword" className="block text-sm font-medium text-gray-700 mb-2">
+                <label
+                  htmlFor="confirmPassword"
+                  className="block text-sm font-medium text-gray-700 mb-2"
+                >
                   Confirm Password
                 </label>
                 <div className="relative">
                   <Lock className="absolute left-3 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-400" />
                   <input
-                    type={showConfirmPassword ? 'text' : 'password'}
+                    type={showConfirmPassword ? "text" : "password"}
                     id="confirmPassword"
                     name="confirmPassword"
                     value={formData.confirmPassword}
                     onChange={handleInputChange}
                     className={`w-full pl-12 pr-12 py-3 border rounded-xl focus:outline-none focus:ring-2 transition-all duration-300 ${
                       errors.confirmPassword
-                        ? 'border-red-300 focus:ring-red-500'
-                        : 'border-gray-300 focus:ring-emerald-500 focus:border-transparent'
+                        ? "border-red-300 focus:ring-red-500"
+                        : "border-gray-300 focus:ring-emerald-500 focus:border-transparent"
                     }`}
                     placeholder="Confirm your password"
                     required
@@ -311,7 +342,11 @@ const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onAuthSuccess }) => {
                     onClick={() => setShowConfirmPassword(!showConfirmPassword)}
                     className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors"
                   >
-                    {showConfirmPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                    {showConfirmPassword ? (
+                      <EyeOff className="w-5 h-5" />
+                    ) : (
+                      <Eye className="w-5 h-5" />
+                    )}
                   </button>
                 </div>
                 {errors.confirmPassword && (
@@ -332,11 +367,13 @@ const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onAuthSuccess }) => {
               {isLoading ? (
                 <>
                   <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-white mr-2"></div>
-                  {authMode === 'signin' ? 'Signing In...' : 'Creating Account...'}
+                  {authMode === "signin"
+                    ? "Signing In..."
+                    : "Creating Account..."}
                 </>
               ) : (
                 <>
-                  {authMode === 'signin' ? 'Sign In' : 'Create Account'}
+                  {authMode === "signin" ? "Sign In" : "Create Account"}
                   <ArrowRight className="w-5 h-5 ml-2" />
                 </>
               )}
@@ -357,10 +394,22 @@ const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onAuthSuccess }) => {
             className="w-full bg-white border-2 border-gray-300 text-gray-700 py-4 rounded-xl font-semibold hover:bg-gray-50 hover:border-gray-400 transition-all duration-300 shadow-md hover:shadow-lg disabled:opacity-50 disabled:cursor-not-allowed flex items-center justify-center"
           >
             <svg className="w-5 h-5 mr-3" viewBox="0 0 24 24">
-              <path fill="#4285F4" d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"/>
-              <path fill="#34A853" d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"/>
-              <path fill="#FBBC05" d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"/>
-              <path fill="#EA4335" d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"/>
+              <path
+                fill="#4285F4"
+                d="M22.56 12.25c0-.78-.07-1.53-.2-2.25H12v4.26h5.92c-.26 1.37-1.04 2.53-2.21 3.31v2.77h3.57c2.08-1.92 3.28-4.74 3.28-8.09z"
+              />
+              <path
+                fill="#34A853"
+                d="M12 23c2.97 0 5.46-.98 7.28-2.66l-3.57-2.77c-.98.66-2.23 1.06-3.71 1.06-2.86 0-5.29-1.93-6.16-4.53H2.18v2.84C3.99 20.53 7.7 23 12 23z"
+              />
+              <path
+                fill="#FBBC05"
+                d="M5.84 14.09c-.22-.66-.35-1.36-.35-2.09s.13-1.43.35-2.09V7.07H2.18C1.43 8.55 1 10.22 1 12s.43 3.45 1.18 4.93l2.85-2.22.81-.62z"
+              />
+              <path
+                fill="#EA4335"
+                d="M12 5.38c1.62 0 3.06.56 4.21 1.64l3.15-3.15C17.45 2.09 14.97 1 12 1 7.7 1 3.99 3.47 2.18 7.07l3.66 2.84c.87-2.6 3.3-4.53 6.16-4.53z"
+              />
             </svg>
             Continue with Google
           </button>
@@ -370,9 +419,12 @@ const Auth: React.FC<AuthProps> = ({ isOpen, onClose, onAuthSuccess }) => {
             <div className="flex items-start space-x-3">
               <Shield className="w-5 h-5 text-emerald-600 mt-0.5" />
               <div>
-                <h4 className="font-semibold text-emerald-800 mb-1">Your Security Matters</h4>
+                <h4 className="font-semibold text-emerald-800 mb-1">
+                  Your Security Matters
+                </h4>
                 <p className="text-sm text-emerald-700">
-                  Your credentials are safely encrypted and stored in our secure database. We never share your personal information.
+                  Your credentials are safely encrypted and stored in our secure
+                  database. We never share your personal information.
                 </p>
               </div>
             </div>

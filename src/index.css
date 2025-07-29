@@ -1,7 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
-
+@import "tailwindcss";
 /* Article content styling */
 .article-content {
   @apply text-gray-800 leading-relaxed;
