@@ -1,40 +1,30 @@
-import React, { useState, useEffect } from 'react';
-import { 
-  ArrowLeft, Clock, User, Calendar, Share2, Bookmark, 
-  Heart, MessageCircle, Eye, Tag, ExternalLink, 
-  Facebook, Twitter, Linkedin, Copy, Check,
-  ThumbsUp, ThumbsDown, Star, TrendingUp
-} from 'lucide-react';
-import HealthNews from './HealthNews';
+import React, { useState, useEffect } from "react";
+import {
+  ArrowLeft,
+  Clock,
+  User,
+  Calendar,
+  Share2,
+  Bookmark,
+  Heart,
+  MessageCircle,
+  Eye,
+  Tag,
+  ExternalLink,
+  Facebook,
+  Twitter,
+  Linkedin,
+  Copy,
+  Check,
+  ThumbsUp,
+  ThumbsDown,
+  Star,
+  TrendingUp,
+} from "lucide-react";
+import HealthNews from "./HealthNews";
 
-interface ArticlePageProps {
-  articleId: string;
-  onBack: () => void;
-}
-
-interface Article {
-  id: string;
-  title: string;
-  summary: string;
-  content: string;
-  fullContent: string;
-  category: string;
-  tags: string[];
-  publishedAt: string;
-  readTime: number;
-  source: string;
-  author: string;
-  imageUrl: string;
-  relevanceScore: number;
-  isSponsored?: boolean;
-  affiliateLink?: string;
-  views: number;
-  likes: number;
-  shares: number;
-}
-
-const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
-  const [article, setArticle] = useState<Article | null>(null);
+const ArticlePage = ({ articleId, onBack }) => {
+  const [article, setArticle] = (useState < Article) | (null > null);
   const [isLoading, setIsLoading] = useState(true);
   const [isBookmarked, setIsBookmarked] = useState(false);
   const [hasLiked, setHasLiked] = useState(false);
@@ -43,12 +33,14 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
   const [readingProgress, setReadingProgress] = useState(0);
 
   // Mock article database
-  const articleDatabase: Record<string, Article> = {
-    '1': {
-      id: '1',
-      title: 'WHO Updates Sugar Intake Guidelines: What You Need to Know',
-      summary: 'New research shows reducing sugar intake by just 10% can significantly improve heart health and reduce diabetes risk.',
-      content: 'The World Health Organization has released updated guidelines recommending adults limit sugar intake to less than 5% of daily calories...',
+  const articleDatabase = {
+    1: {
+      id: "1",
+      title: "WHO Updates Sugar Intake Guidelines: What You Need to Know",
+      summary:
+        "New research shows reducing sugar intake by just 10% can significantly improve heart health and reduce diabetes risk.",
+      content:
+        "The World Health Organization has released updated guidelines recommending adults limit sugar intake to less than 5% of daily calories...",
       fullContent: `
         <div class="prose prose-lg max-w-none">
           <p class="lead">The World Health Organization (WHO) has released comprehensive updated guidelines on sugar intake, marking the most significant revision to nutritional recommendations in over a decade. These new guidelines are based on extensive research involving over 50,000 participants across 15 countries.</p>
@@ -120,23 +112,26 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
           </div>
         </div>
       `,
-      category: 'nutrition',
-      tags: ['sugar', 'diabetes', 'heart-health', 'WHO', 'guidelines'],
-      publishedAt: '2024-01-15T10:30:00Z',
+      category: "nutrition",
+      tags: ["sugar", "diabetes", "heart-health", "WHO", "guidelines"],
+      publishedAt: "2024-01-15T10:30:00Z",
       readTime: 8,
-      source: 'Health Today',
-      author: 'Dr. Sarah Mitchell',
-      imageUrl: 'https://images.pexels.com/photos/4226140/pexels-photo-4226140.jpeg?auto=compress&cs=tinysrgb&w=800',
+      source: "Health Today",
+      author: "Dr. Sarah Mitchell",
+      imageUrl:
+        "https://images.pexels.com/photos/4226140/pexels-photo-4226140.jpeg?auto=compress&cs=tinysrgb&w=800",
       relevanceScore: 9.2,
       views: 15420,
       likes: 892,
-      shares: 156
+      shares: 156,
     },
-    '2': {
-      id: '2',
-      title: 'Preservatives and Gut Health: Latest Research Findings',
-      summary: 'Scientists discover how common food preservatives may disrupt beneficial gut bacteria and impact digestive health.',
-      content: 'A comprehensive study involving 10,000 participants reveals concerning links between artificial preservatives and gut microbiome disruption...',
+    2: {
+      id: "2",
+      title: "Preservatives and Gut Health: Latest Research Findings",
+      summary:
+        "Scientists discover how common food preservatives may disrupt beneficial gut bacteria and impact digestive health.",
+      content:
+        "A comprehensive study involving 10,000 participants reveals concerning links between artificial preservatives and gut microbiome disruption...",
       fullContent: `
         <div class="prose prose-lg max-w-none">
           <p class="lead">A groundbreaking study published in the Journal of Gastroenterology has revealed significant connections between common food preservatives and gut microbiome disruption, raising important questions about the long-term health effects of processed foods.</p>
@@ -215,17 +210,18 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
           </div>
         </div>
       `,
-      category: 'research',
-      tags: ['preservatives', 'gut-health', 'microbiome', 'digestive-health'],
-      publishedAt: '2024-01-14T14:20:00Z',
+      category: "research",
+      tags: ["preservatives", "gut-health", "microbiome", "digestive-health"],
+      publishedAt: "2024-01-14T14:20:00Z",
       readTime: 10,
-      source: 'Medical Journal Weekly',
-      author: 'Dr. Emily Rodriguez',
-      imageUrl: 'https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800',
+      source: "Medical Journal Weekly",
+      author: "Dr. Emily Rodriguez",
+      imageUrl:
+        "https://images.pexels.com/photos/3184291/pexels-photo-3184291.jpeg?auto=compress&cs=tinysrgb&w=800",
       relevanceScore: 8.7,
       views: 12350,
       likes: 743,
-      shares: 89
+      shares: 89,
     },
     // Add more articles as needed
   };
@@ -243,32 +239,48 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
   useEffect(() => {
     const handleScroll = () => {
       const scrollTop = window.scrollY;
-      const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+      const docHeight =
+        document.documentElement.scrollHeight - window.innerHeight;
       const scrollPercent = (scrollTop / docHeight) * 100;
       setReadingProgress(Math.min(scrollPercent, 100));
     };
 
-    window.addEventListener('scroll', handleScroll);
-    return () => window.removeEventListener('scroll', handleScroll);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
   }, []);
 
-  const handleShare = (platform: string) => {
+  const handleShare = (platform) => {
     if (!article) return;
-    
+
     const url = window.location.href;
     const text = `Check out this article: ${article.title}`;
-    
+
     switch (platform) {
-      case 'facebook':
-        window.open(`https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(url)}`, '_blank');
+      case "facebook":
+        window.open(
+          `https://www.facebook.com/sharer/sharer.php?u=${encodeURIComponent(
+            url
+          )}`,
+          "_blank"
+        );
         break;
-      case 'twitter':
-        window.open(`https://twitter.com/intent/tweet?text=${encodeURIComponent(text)}&url=${encodeURIComponent(url)}`, '_blank');
+      case "twitter":
+        window.open(
+          `https://twitter.com/intent/tweet?text=${encodeURIComponent(
+            text
+          )}&url=${encodeURIComponent(url)}`,
+          "_blank"
+        );
         break;
-      case 'linkedin':
-        window.open(`https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(url)}`, '_blank');
+      case "linkedin":
+        window.open(
+          `https://www.linkedin.com/sharing/share-offsite/?url=${encodeURIComponent(
+            url
+          )}`,
+          "_blank"
+        );
         break;
-      case 'copy':
+      case "copy":
         navigator.clipboard.writeText(url);
         setCopySuccess(true);
         setTimeout(() => setCopySuccess(false), 2000);
@@ -282,16 +294,16 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
     if (article) {
       setArticle({
         ...article,
-        likes: hasLiked ? article.likes - 1 : article.likes + 1
+        likes: hasLiked ? article.likes - 1 : article.likes + 1,
       });
     }
   };
 
-  const formatDate = (dateString: string) => {
-    return new Date(dateString).toLocaleDateString('en-US', {
-      year: 'numeric',
-      month: 'long',
-      day: 'numeric'
+  const formatDate = (dateString) => {
+    return new Date(dateString).toLocaleDateString("en-US", {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
     });
   };
 
@@ -315,8 +327,12 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
     return (
       <div className="min-h-screen bg-gray-50 flex items-center justify-center">
         <div className="text-center">
-          <h2 className="text-2xl font-bold text-gray-900 mb-4">Article Not Found</h2>
-          <p className="text-gray-600 mb-8">The article you're looking for doesn't exist.</p>
+          <h2 className="text-2xl font-bold text-gray-900 mb-4">
+            Article Not Found
+          </h2>
+          <p className="text-gray-600 mb-8">
+            The article you're looking for doesn't exist.
+          </p>
           <button
             onClick={onBack}
             className="bg-emerald-500 text-white px-6 py-3 rounded-xl hover:bg-emerald-600 transition-colors"
@@ -349,17 +365,19 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
               <ArrowLeft className="w-5 h-5" />
               <span>Back to News</span>
             </button>
-            
+
             <div className="flex items-center space-x-4">
               <button
                 onClick={() => setIsBookmarked(!isBookmarked)}
                 className={`p-2 rounded-lg transition-colors ${
-                  isBookmarked ? 'bg-emerald-100 text-emerald-600' : 'bg-gray-100 text-gray-600 hover:bg-gray-200'
+                  isBookmarked
+                    ? "bg-emerald-100 text-emerald-600"
+                    : "bg-gray-100 text-gray-600 hover:bg-gray-200"
                 }`}
               >
                 <Bookmark className="w-5 h-5" />
               </button>
-              
+
               <div className="relative">
                 <button
                   onClick={() => setShowShareMenu(!showShareMenu)}
@@ -367,33 +385,33 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
                 >
                   <Share2 className="w-5 h-5" />
                 </button>
-                
+
                 {showShareMenu && (
                   <div className="absolute right-0 top-12 bg-white rounded-xl shadow-lg border border-gray-200 p-4 min-w-48 z-50">
                     <div className="space-y-2">
                       <button
-                        onClick={() => handleShare('facebook')}
+                        onClick={() => handleShare("facebook")}
                         className="flex items-center space-x-3 w-full p-2 text-left hover:bg-gray-50 rounded-lg transition-colors"
                       >
                         <Facebook className="w-5 h-5 text-blue-600" />
                         <span>Facebook</span>
                       </button>
                       <button
-                        onClick={() => handleShare('twitter')}
+                        onClick={() => handleShare("twitter")}
                         className="flex items-center space-x-3 w-full p-2 text-left hover:bg-gray-50 rounded-lg transition-colors"
                       >
                         <Twitter className="w-5 h-5 text-sky-500" />
                         <span>Twitter</span>
                       </button>
                       <button
-                        onClick={() => handleShare('linkedin')}
+                        onClick={() => handleShare("linkedin")}
                         className="flex items-center space-x-3 w-full p-2 text-left hover:bg-gray-50 rounded-lg transition-colors"
                       >
                         <Linkedin className="w-5 h-5 text-blue-700" />
                         <span>LinkedIn</span>
                       </button>
                       <button
-                        onClick={() => handleShare('copy')}
+                        onClick={() => handleShare("copy")}
                         className="flex items-center space-x-3 w-full p-2 text-left hover:bg-gray-50 rounded-lg transition-colors"
                       >
                         {copySuccess ? (
@@ -401,7 +419,7 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
                         ) : (
                           <Copy className="w-5 h-5 text-gray-600" />
                         )}
-                        <span>{copySuccess ? 'Copied!' : 'Copy Link'}</span>
+                        <span>{copySuccess ? "Copied!" : "Copy Link"}</span>
                       </button>
                     </div>
                   </div>
@@ -425,14 +443,14 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
                 className="w-full h-full object-cover"
               />
               <div className="absolute inset-0 bg-gradient-to-t from-black/50 to-transparent"></div>
-              
+
               {/* Category Badge */}
               <div className="absolute top-6 left-6">
                 <span className="bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full text-sm font-medium text-gray-800 capitalize">
                   {article.category}
                 </span>
               </div>
-              
+
               {/* Sponsored Badge */}
               {article.isSponsored && (
                 <div className="absolute top-6 right-6">
@@ -448,7 +466,7 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
               <h1 className="text-3xl lg:text-4xl font-bold text-gray-900 mb-6 leading-tight">
                 {article.title}
               </h1>
-              
+
               <p className="text-xl text-gray-600 mb-8 leading-relaxed">
                 {article.summary}
               </p>
@@ -492,19 +510,23 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
                   <button
                     onClick={handleLike}
                     className={`flex items-center space-x-2 transition-colors ${
-                      hasLiked ? 'text-emerald-600' : 'text-gray-600 hover:text-emerald-600'
+                      hasLiked
+                        ? "text-emerald-600"
+                        : "text-gray-600 hover:text-emerald-600"
                     }`}
                   >
-                    <ThumbsUp className={`w-5 h-5 ${hasLiked ? 'fill-current' : ''}`} />
+                    <ThumbsUp
+                      className={`w-5 h-5 ${hasLiked ? "fill-current" : ""}`}
+                    />
                     <span>{article.likes}</span>
                   </button>
-                  
+
                   <div className="flex items-center space-x-2 text-gray-600">
                     <Share2 className="w-5 h-5" />
                     <span>{article.shares}</span>
                   </div>
                 </div>
-                
+
                 <div className="flex items-center space-x-2 text-gray-600">
                   <Star className="w-5 h-5 text-amber-500 fill-current" />
                   <span>{article.relevanceScore}/10</span>
@@ -515,17 +537,20 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
 
           {/* Article Content */}
           <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
-            <div 
+            <div
               className="article-content"
               dangerouslySetInnerHTML={{ __html: article.fullContent }}
             />
-            
+
             {/* Affiliate Link */}
             {article.affiliateLink && (
               <div className="mt-8 p-6 bg-gradient-to-r from-amber-50 to-orange-50 rounded-2xl border border-amber-200">
-                <h3 className="text-lg font-semibold text-amber-800 mb-3">Related Products</h3>
+                <h3 className="text-lg font-semibold text-amber-800 mb-3">
+                  Related Products
+                </h3>
                 <p className="text-amber-700 mb-4">
-                  Based on this article, you might be interested in these health-focused products.
+                  Based on this article, you might be interested in these
+                  health-focused products.
                 </p>
                 <a
                   href={article.affiliateLink}
@@ -542,18 +567,26 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
 
           {/* Author Bio */}
           <div className="bg-white rounded-3xl shadow-lg p-8 mb-8">
-            <h3 className="text-xl font-bold text-gray-900 mb-4">About the Author</h3>
+            <h3 className="text-xl font-bold text-gray-900 mb-4">
+              About the Author
+            </h3>
             <div className="flex items-start space-x-4">
               <div className="w-16 h-16 bg-gradient-to-r from-emerald-500 to-sky-500 rounded-full flex items-center justify-center">
                 <User className="w-8 h-8 text-white" />
               </div>
               <div>
-                <h4 className="text-lg font-semibold text-gray-900">{article.author}</h4>
-                <p className="text-gray-600 mb-3">Senior Health Writer at {article.source}</p>
+                <h4 className="text-lg font-semibold text-gray-900">
+                  {article.author}
+                </h4>
+                <p className="text-gray-600 mb-3">
+                  Senior Health Writer at {article.source}
+                </p>
                 <p className="text-gray-700 leading-relaxed">
-                  {article.author} is a certified nutritionist and health journalist with over 10 years of experience 
-                  covering the latest developments in nutrition science and public health policy. She holds a PhD in 
-                  Nutritional Sciences and regularly contributes to leading health publications.
+                  {article.author} is a certified nutritionist and health
+                  journalist with over 10 years of experience covering the
+                  latest developments in nutrition science and public health
+                  policy. She holds a PhD in Nutritional Sciences and regularly
+                  contributes to leading health publications.
                 </p>
               </div>
             </div>
@@ -561,7 +594,7 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
 
           {/* Related Articles */}
           <div className="mb-8">
-            <HealthNews 
+            <HealthNews
               context="scan-result"
               scannedIngredients={article.tags}
               productCategory={article.category}
@@ -570,9 +603,12 @@ const ArticlePage: React.FC<ArticlePageProps> = ({ articleId, onBack }) => {
 
           {/* Newsletter Signup */}
           <div className="bg-gradient-to-r from-emerald-500 to-sky-500 rounded-3xl p-8 text-white text-center">
-            <h3 className="text-2xl font-bold mb-4">Stay Updated with Health News</h3>
+            <h3 className="text-2xl font-bold mb-4">
+              Stay Updated with Health News
+            </h3>
             <p className="text-lg mb-6 opacity-90">
-              Get the latest health insights and nutrition news delivered to your inbox weekly.
+              Get the latest health insights and nutrition news delivered to
+              your inbox weekly.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center max-w-md mx-auto">
               <input
